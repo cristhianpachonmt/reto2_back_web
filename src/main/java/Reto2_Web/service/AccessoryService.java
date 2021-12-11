@@ -9,43 +9,46 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+
 @Service
 public class AccessoryService {
-    @Autowired
-    private AccessoryRepository clotheRepository;
 
-    public List<Accessory> getAll() {
-        return clotheRepository.getAll();
+    @Autowired
+    private AccessoryRepository repositorio;
+
+    public List<Accessory> listAll() {
+        return repositorio.listAll();
     }
 
-   public Optional<Accessory> getAccessory(String reference) {
-        return clotheRepository.getAccessory(reference);
+    public Optional<Accessory> getAccesory(String reference) {
+        return repositorio.getAccesory(reference);
     }
 
     public Accessory create(Accessory accesory) {
         if (accesory.getReference() == null) {
             return accesory;
         } else {
-            return clotheRepository.create(accesory);
+            return repositorio.create(accesory);
         }
     }
 
     public Accessory update(Accessory accesory) {
 
         if (accesory.getReference() != null) {
-            Optional<Accessory> accesoryDb = clotheRepository.getAccessory(accesory.getReference());
+            Optional<Accessory> accesoryDb = repositorio.getAccesory(accesory.getReference());
             if (!accesoryDb.isEmpty()) {
-                
-                if (accesory.getBrand()!= null) {
+                if (accesory.getBrand() != null) {
                     accesoryDb.get().setBrand(accesory.getBrand());
                 }
-                
+
                 if (accesory.getCategory() != null) {
                     accesoryDb.get().setCategory(accesory.getCategory());
                 }
+
                 if (accesory.getMaterial() != null) {
                     accesoryDb.get().setMaterial(accesory.getMaterial());
                 }
+
                 if (accesory.getDescription() != null) {
                     accesoryDb.get().setDescription(accesory.getDescription());
                 }
@@ -59,7 +62,7 @@ public class AccessoryService {
                     accesoryDb.get().setPhotography(accesory.getPhotography());
                 }
                 accesoryDb.get().setAvailability(accesory.isAvailability());
-                clotheRepository.update(accesoryDb.get());
+                repositorio.update(accesoryDb.get());
                 return accesoryDb.get();
             } else {
                 return accesory;
@@ -70,12 +73,10 @@ public class AccessoryService {
     }
 
     public boolean delete(String reference) {
-        Boolean aBoolean = getAccessory(reference).map(accesory -> {
-            clotheRepository.delete(accesory);
+        Boolean aBoolean = getAccesory(reference).map(accesory -> {
+            repositorio.delete(accesory);
             return true;
         }).orElse(false);
         return aBoolean;
     }
-    
-    
 }

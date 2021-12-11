@@ -1,3 +1,4 @@
+
 package Reto2_Web.service;
 
 //@author Nigth Crawler
@@ -11,39 +12,42 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class UserService {
-    @Autowired
-    private UserRepository userRepository;
 
-    public List<User> getAll() {
-        return userRepository.getAll();
-    }
+    @Autowired
+    private UserRepository repositorio;
 
     public Optional<User> getUser(int id) {
-        
-        return userRepository.getUser(id);
+        return repositorio.getUser(id);
     }
 
     public User create(User user) {
+        
+        Optional<User> userIdMaximo = repositorio.lastUserId();
+                
         if (user.getId() == null) {
-            return user;            
-        }else {
-            Optional<User> e = userRepository.getUser(user.getId());
-            if (e.isEmpty()) {
-                if (emailExists(user.getEmail())==false){
-                    return userRepository.create(user);
-                }else{
-                    return user;
-                }
+        
+            if (userIdMaximo.isEmpty())
+                user.setId(1);
+            else
+                user.setId(userIdMaximo.get().getId() + 1);
+        }
+        
+        Optional<User> e = repositorio.getUser(user.getId());
+        if (e.isEmpty()) {
+            if (emailExist(user.getEmail())==false){
+                return repositorio.create(user);
             }else{
                 return user;
-            }           
+            }
+        }else{
+            return user;
         }
     }
-
+    
     public User update(User user) {
 
         if (user.getId() != null) {
-            Optional<User> userDb = userRepository.getUser(user.getId());
+            Optional<User> userDb = repositorio.getUser(user.getId());
             if (!userDb.isEmpty()) {
                 if (user.getIdentification() != null) {
                     userDb.get().setIdentification(user.getIdentification());
@@ -66,8 +70,8 @@ public class UserService {
                 if (user.getZone() != null) {
                     userDb.get().setZone(user.getZone());
                 }
-                
-                userRepository.update(userDb.get());
+
+                repositorio.update(userDb.get());
                 return userDb.get();
             } else {
                 return user;
@@ -79,24 +83,30 @@ public class UserService {
     
     public boolean delete(int userId) {
         Boolean aBoolean = getUser(userId).map(user -> {
-            userRepository.delete(user);
+            repositorio.delete(user);
             return true;
         }).orElse(false);
         return aBoolean;
     }
     
-    public boolean emailExists(String email) {
-        return userRepository.emailExists(email);
+    public List<User> listAll() {
+        return repositorio.listAll();
     }
 
-    public User authenticateUser(String email, String password) {
-        Optional<User> usuario = userRepository.authenticateUser(email, password);
+    public boolean emailExist(String email) {
+        return repositorio.emailExist(email);
+    }
+
+    public User autenticateUser(String email, String password) {
+        Optional<User> usuario = repositorio.autenticateUser(email, password);
 
         if (usuario.isEmpty()) {
             return new User();
         } else {
             return usuario.get();
         }
+    } 
+    public List<User> listBirthtDayMonth(String month){
+        return repositorio.listBirthtDayMonth(month);
     }
-    
 }

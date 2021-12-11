@@ -4,22 +4,23 @@
  */
 package Reto2_Web.interfaces;
 
-import Reto2_Web.model.User;
+import Reto2_Web.model.Order;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.mongodb.repository.Query;
 
 /**
  *
  * @author Nigth Crawler
  */
-public interface InterfaceUser extends MongoRepository<User, Integer>{
+public interface InterfaceOrder extends MongoRepository<Order, Integer> {
     
-    public Optional <User> findByEmail(String email);
+    @Query("{'salesMan.zone': ?0}")            
+    List<Order> findByZone(final String zone);
     
-    public Optional<User> findByEmailAndPassword(String email, String password);
+    @Query("{status: ?0}")            
+    List<Order> findByStatus(final String status);
     
-    Optional<User> findTopByOrderByIdDesc();
-    
-    List<User> findByMonthBirthtDay(String month);    
+    Optional<Order> findTopByOrderByIdDesc();
 }

@@ -2,8 +2,8 @@ package Reto2_Web.controller;
 
 //@author Nigth Crawler
 
-import Reto2_Web.model.Accessory;
-import Reto2_Web.service.AccessoryService;
+import Reto2_Web.model.Order;
+import Reto2_Web.service.OrderService;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,44 +15,49 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
+@RequestMapping("/api/order")
 @CrossOrigin("*")
-@RequestMapping("/api/accessory")
-public class AccessoryController {
-
+public class OrderController {
     @Autowired
-    private AccessoryService servicio;
-
+    private OrderService orderService;
+    
     @GetMapping("/all")
-    public List<Accessory> listAll() {
-        return servicio.listAll();
+    public List<Order> getAll() {
+        return orderService.getAll();
     }
 
-    @GetMapping("/{reference}")
-    public Optional<Accessory> getAccesory(@PathVariable("reference") String reference) {
-        return servicio.getAccesory(reference);
+    @GetMapping("/{id}")
+    public Optional<Order> getOrder(@PathVariable("id") int id) {
+        return orderService.getOrder(id);
     }
 
     @PostMapping("/new")
     @ResponseStatus(HttpStatus.CREATED)
-    public Accessory create(@RequestBody Accessory accessory) {
-        return servicio.create(accessory);
+    public Order create(@RequestBody Order gadget) {
+        return orderService.create(gadget);
     }
 
     @PutMapping("/update")
     @ResponseStatus(HttpStatus.CREATED)
-    public Accessory update(@RequestBody Accessory accessory) {
-        return servicio.update(accessory);
+    public Order update(@RequestBody Order gadget) {
+        return orderService.update(gadget);
     }
 
-    @DeleteMapping("/{reference}")
+    @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public boolean delete(@PathVariable("reference") String reference) {
-        return servicio.delete(reference);
+    public boolean delete(@PathVariable("id") int id) {
+        return orderService.delete(id);
+    }
+    
+    //Reto 3:Ordenes de pedido asociadas a los asesores de una zona
+    @GetMapping("/zona/{zona}")  
+    public List<Order> findByZone(@PathVariable("zona") String zona) {
+        return orderService.findByZone(zona);
     }
 }

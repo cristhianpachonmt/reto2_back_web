@@ -5,6 +5,7 @@ package Reto2_Web.controller;
 import Reto2_Web.model.User;
 import Reto2_Web.service.UserService;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -21,38 +22,52 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
-@RequestMapping("/api/user")
 @CrossOrigin("*")
+@RequestMapping("/api/user")
 public class UserController {
+
     @Autowired
-    private UserService userService;
-     
-     @GetMapping("/all")
-    public List<User> getAll() {
-        return userService.getAll();
-    }
-      @PostMapping("/new")
-    @ResponseStatus(HttpStatus.CREATED)
-    public User create(@RequestBody User user) {
-        return userService.create(user);
+    private UserService servicio;
+
+    @GetMapping("/all")
+    public List<User> listAll() {
+        return servicio.listAll();
     }
     
+    @GetMapping("/{id}")
+    public Optional<User> getUser(@PathVariable("id") int id){
+        return servicio.getUser(id);
+    }  
+    
+    @PostMapping("/new")
+    @ResponseStatus(HttpStatus.CREATED)
+    public User create(@RequestBody User user) {
+        return servicio.create(user);
+    }
+
     @PutMapping("/update")
     @ResponseStatus(HttpStatus.CREATED)
     public User update(@RequestBody User user) {
-        return userService.update(user);
+        return servicio.update(user);
     }
+
+    @GetMapping("/emailexist/{email}")
+    public boolean emailExist(@PathVariable("email") String email) {
+        return servicio.emailExist(email);
+    }
+    
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public boolean delete(@PathVariable("id") int id) {
-        return userService.delete(id);
+    public boolean delete(@PathVariable("id") int id){
+        return servicio.delete(id);
     }
+       
     @GetMapping("/{email}/{password}")
-    public User authenticateUser(@PathVariable("email") String email, @PathVariable("password") String password) {
-        return userService.authenticateUser(email, password);
+    public User autenticateUser(@PathVariable("email") String email, @PathVariable("password") String password) {
+        return servicio.autenticateUser(email, password);
     }
-      @GetMapping("/emailexist/{email}")
-    public boolean emailExists(@PathVariable("email") String email) {
-        return userService.emailExists(email);
+    @GetMapping("/birthday/{month}")
+    public List<User> listBirthtDayMonth(@PathVariable("month") String month){
+        return servicio.listBirthtDayMonth(month);
     }
 }

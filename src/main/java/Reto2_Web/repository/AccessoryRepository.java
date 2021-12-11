@@ -11,26 +11,27 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public class AccessoryRepository {
+
     @Autowired
-    private InterfaceAccessory repository;
+    private InterfaceAccessory crudInterface;
 
-    public List<Accessory> getAll() {
-        return repository.findAll();
-    }
-    
-    public Optional<Accessory> getAccessory(String reference) {
-        return repository.findById(reference);
-    }
-    
-    public Accessory create(Accessory clothe) {
-        return repository.save(clothe);
+    public List<Accessory> listAll() {
+        return crudInterface.findAll();
     }
 
-    public void update(Accessory clothe) {
-        repository.save(clothe);
+    public Optional<Accessory> getAccesory(String reference) {
+        return crudInterface.findById(reference);
     }
-    
-    public void delete(Accessory clothe) {
-        repository.delete(clothe);
+
+    public Accessory create(Accessory accesory) {
+        return crudInterface.save(accesory);
+    }
+
+    public void update(Accessory accesory) {
+        crudInterface.save(accesory);
+    }
+
+    public void delete(Accessory accesory) {
+        crudInterface.delete(accesory);
     }
 }

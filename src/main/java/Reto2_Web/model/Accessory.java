@@ -11,9 +11,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-
 public class Accessory {
-
     @Id
     private String reference;
     private String brand;
