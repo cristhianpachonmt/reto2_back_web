@@ -72,10 +72,25 @@ public class OrderService {
         }).orElse(false);
         return aBoolean;
     }
-
-    //Reto 3 Ordenes de pedido asociadas a los asesores de una zona
+    
+    //Ordenes de pedido asociadas a los asesores de una zona
     public List<Order> findByZone(String zona) {
         return orderRepository.findByZone(zona);
+    }
+    
+    //Listar ordenes de pedido de un asesor
+    public List<Order> ordersSalesManByID(Integer id) {
+       return orderRepository.ordersSalesManByID(id);
+    }
+    
+    //Listar ordenes de pedido por x estado y asesor
+    public List<Order> ordersSalesManByState(String state, Integer id) {
+        return orderRepository.ordersSalesManByState(state,id);
+    }
+    
+    //Ordenes de un asesor x Fecha
+    public List<Order> ordersSalesManByDate(String dateStr, Integer id){
+        return orderRepository.ordersSalesManByDate(dateStr, id);
     }
 }
 

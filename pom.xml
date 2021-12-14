@@ -8,10 +8,10 @@
 		<version>2.6.1</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>Reto2_Web</groupId>
-	<artifactId>Reto2_Web</artifactId>
+	<groupId>Reto4_Web</groupId>
+	<artifactId>Reto4_Web</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>Reto2_Web</name>
+	<name>Reto4_Web</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
 		<java.version>11</java.version>

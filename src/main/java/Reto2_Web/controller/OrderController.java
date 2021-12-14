@@ -55,9 +55,26 @@ public class OrderController {
         return orderService.delete(id);
     }
     
-    //Reto 3:Ordenes de pedido asociadas a los asesores de una zona
+    //Ordenes de pedido asociadas a los asesores de una zona
     @GetMapping("/zona/{zona}")  
     public List<Order> findByZone(@PathVariable("zona") String zona) {
         return orderService.findByZone(zona);
+    }
+    //Ordenes de un asesor
+    @GetMapping("/salesman/{id}")
+    public List<Order> ordersSalesManByID(@PathVariable("id") Integer id) {
+       return orderService.ordersSalesManByID(id);
+    }
+    
+    //Listar ordenes de pedido por x estado y asesor
+    @GetMapping("/state/{state}/{id}")
+    public List<Order> ordersSalesManByState(@PathVariable("state") String state, @PathVariable("id") Integer id) {
+        return orderService.ordersSalesManByState(state,id);
+    }
+    
+    //Ordenes de un asesor x Fecha
+    @GetMapping("/date/{date}/{id}")
+    public List<Order> ordersSalesManByDate(@PathVariable("date") String dateStr, @PathVariable("id") Integer id){
+        return orderService.ordersSalesManByDate(dateStr, id);
     }
 }
