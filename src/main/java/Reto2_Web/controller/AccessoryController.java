@@ -55,4 +55,14 @@ public class AccessoryController {
     public boolean delete(@PathVariable("reference") String reference) {
         return servicio.delete(reference);
     }
+    
+    @GetMapping("/price/{price}")
+    public List<Accessory> productsByPrice(@PathVariable("price") double precio){
+        return servicio.productsByPrice(precio);
+    }
+    
+    @GetMapping("/description/{description}")
+    public List<Accessory> findByDescriptionLike(@PathVariable("description") String description){
+	return servicio.findByDescriptionLike(description);
+    }    
 }
